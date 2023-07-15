@@ -1,0 +1,43 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage{titling}
+\newcommand*{\myversion}{1.1}
+\title{LewDos \myversion}
+\author{Mutz03 Zockt \thanks{Mutz03 Zockt AKA. Tobias Mittermeier}}
+\date{July 2023}
+\title{\Large\bfseries LewDos \myversion \\ Analogic Universal Operating system Reference Manual}
+\begin{document}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section*{1. General Overview}
+\subsection*{1.1 Modularity}
+LewDos is a designed to be modular operating system for the purpose of running on a wide variety of Computer systems.
+The minimal required configuration only requires user input and output. in short a Serial port or paralell port terminal or screen and keyboard.
+If you wish for more functionality, it is possible to enhance the LewDos operating system with LewDos-modules (.ldm files).
+Software written for LewDos will work on any LewDos instance, given that the required modules are installed. LewDos is completely virtualiyed and compiles the software bevore runtime
+for the hardware that its executed from, thus providing maximum compatibility. for example a software that runns on the LewDos-Core System, will run on any LewDos system.
+\subsection*{1.2 Kernel and Core system}
+The LewDos Kernel is written in C, and provides a Virtualisation layer for memory access, athrimetric and User handeling. The Core system is compiled from three parts. \\
+- "Meth" which provides athrimetric and Logic Functionality and also handeles CPU access. \\
+- "Memes" which handles Memory and Stack access, it also provides security integration with "Orgy" to prevent Users to invade each others memory space. \\
+- "butTerm" which is a Terminal access. depending on the Target system it emulates a Terminal on a Graphics screen or it accesses the Serial or Paralell port to output to a terminal. \\
+\subsection*{1.3 Concept}
+LewDos is a operating system. but at its core, it is a translator to make universal code avaiable. Essentially, there is no compiling or need to compile for LewDos code.
+the source code will always get shared, and will be compiled at the momment when you run the program. This ensures that the code will run on anything. if you are concerned and do not want
+to open source everything, there might be a future project to implement some sort of encryption, so only the OS can read the assembly source. that is not priority though.
+LewDos also offers a simple User interface with "Smash" a instantly interpreted command language, like the Unix Shell, Bash or Basic. LewDos will be Open source and will be avaiable for 
+everyone to compile for themselves. with that we can ensure that Lewdos can be made compatible for every system. if you build your own Homebrew computer. you should be able to Run LewDos on it.
+LewDos offers a way to access hardware via its own hardware access routines. such enabling you to write modules on OS level to enable certain functionality of your Hardware.
+Every software program written for LewDos has a header, where all the neccesary modules get specified. so the OS will check if the modules are installed and will promt you with an error
+if modules cant be found, such preventing unexpected behaviour.
+\subsection*{1.4 Module Catalog}
+on GitHub you will be able to get a place where you can download all the modules. and they will be indexed there as well.
+\newpage
+\section*{2. Installation of LewDos}
+\section*{3. Usage of Smash}
+\section*{4. LewDos assmebly}
+\section*{5. Architecture}
+\end{document}
