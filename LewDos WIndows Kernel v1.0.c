@@ -74,7 +74,7 @@ int* Logic_Args_Splitter(char* Arguments) {
     if (argumentC[0] == '@') {}
     else {
         printf("\033[1;31m Kernel Panic: Math Destination Argument not a Pointer\033[0m\n");
-        return 255;
+        return 0;
     }
     if (argumentC[1] == '$') {
         char* hexString = argumentC + 2;
@@ -192,7 +192,7 @@ int* Math_Args_Splitter(char* Arguments) {
     if (argumentC[0] == '@') {}
     else {
         printf("\033[1;31m Kernel Panic: Math Destination Argument not a Pointer\033[0m\n");
-        return 255;
+        return 0;
     }
     if (argumentC[1] == '$') {
         char* hexString = argumentC + 2;
@@ -533,7 +533,6 @@ void  Assembler(char filename[], int Permission) {
     }
     printf("\033[1;33m Assembler.c: code to be assembled: %s, %d Lines long\033[0m\n",filename, Code_length);
     fclose(ROM_Code);
-    ROM_Code = fopen(filename, "r");
 
     // Allocate Memory for assembled output
     int* Op_Code = (int*)malloc(Code_length * sizeof(int));
@@ -552,6 +551,7 @@ void  Assembler(char filename[], int Permission) {
     }
     fclose(Ins_Set);
     int Instruction_Pointer = 0;
+    ROM_Code = fopen(filename, "r");
     while (fgets(read_Buffer, sizeof(read_Buffer), ROM_Code) != NULL) {
         char Instruction[40];
         sscanf(read_Buffer, "%s", Instruction);
@@ -565,7 +565,7 @@ void  Assembler(char filename[], int Permission) {
             if (compare_result == 0) {
                 Op_Code[Instruction_Pointer] = Opcode_pointer;
                 found_instruction = 1;
-                //printf("\033[1;32m Assembler.c: OPcode assembled: %s %d \033[0m\n", Instruction, Opcode_pointer);
+                printf("\033[1;32m Assembler.c: OPcode assembled: %s %d \033[0m\n", Instruction, Opcode_pointer);
                 break;
             }
             Opcode_pointer++;
