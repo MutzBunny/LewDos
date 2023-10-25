@@ -26,6 +26,12 @@
     <None Include="LewdosOS.ass">
       <Filter>Ressourcendateien</Filter>
     </None>
+    <None Include="LewDosLogo.ldp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="UserDat.ldf">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LewDos WIndows Kernel v1.0.c">

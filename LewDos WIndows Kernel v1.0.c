@@ -1,11 +1,15 @@
 #include "Config.h"
-#define LDVersion "V1.1"
-#define Stack_Chunksize 128
-#define Heap_Chunksize 512
+#include <string.h>
+#define LDVersion "V1.2" //definition for the LewDos Version
+#define Stack_Chunksize 127 //memory allocation chunk size for the User Stack
+#define Heap_Chunksize 511 //memory allocation chunk size for the User Heap Space
+#define UVA_Size 4 //memory allocation chunk size for the User Variables.
+//1 UserID, 2 Permission Level, 3 Stackpointer, 4 Stacksize, 5 Heapsize
 #define Routine_Tag_Offset 35
 #pragma warning(disable : 4996)
+char Smash_Commands[5][20];
 
-//Virtual Memory Initialisation
+//Virtual Memory Initialisation DEPRICATED!!!!
 int Stackpointer = 0;
 int* Stack = 0;
 int* Heap = 0;
@@ -14,6 +18,11 @@ char** Routine_Lookup = 0;
 int* Routine_Address = 0;
 int Routine_Lookup_Length = 0;
 
+// User Variables Array Creation
+// The UVA Stores Important User data, like Username, UserID, Stackpointer Ect. (Look up Documentation for more information)
+int UserVariableArray[UVA_Size][1];
+// The UserIndex table is a array that allocates the UserIDs to the places where they are allocated in memory.
+int UserIndex[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /*debug Helper:
 ErrorCodes:
@@ -610,9 +619,192 @@ void  Assembler(char filename[], int Permission) {
     return;
 }
 
+void Memory_Initialization(bool useStack, int amount, int UserID, char* Username, int Permission_Level) { //NOT FINSHED YET!!!!!!!
+        //printf("\033[1;33m Memes@LewDos %s: Initialie Memory for %d \033[0m\n", LDVersion, UserID);
+        //find a empty spot in the user index to allocate our memory to. The User index keeps track on which user has which array cloumn.
+        int UserIndexPointer = 255;
+        for (int i = 0; i < sizeof(UserIndex); i++) {
+            if (UserIndex[i] == 0) {
+                UserIndexPointer = i;
+                break;
+            }
+        }
+        //throws error if there are already max logged in users.
+        if (UserIndexPointer == 255) {
+            printf("\033[1;31m LewDosKernel %s: User Index Overflow. Too many Logged in Users! \033[0m\n", LDVersion);
+            return;
+        }
+        //Set the new user's ID into the Index at our empty location
+        UserIndex[UserIndexPointer] = UserID;
+        if (UserVariableArray[0][0] != NULL){
+            //Create temporary Array and copy the content of the User Variable array inside. Also Frees the User Variable Array after copying
+            int** Temp_UVA[UVA_Size];
+            if (Temp_UVA == NULL) {
+                printf("\033[1;31m LewDosKernel %s: UVAtmp Memory Allocation Fault!\033[0m\n", LDVersion);
+                return;
+            }
+            int Arraysize = sizeof(UserVariableArray);
+            for (int i = 0; i < UVA_Size; i++) {
+                Temp_UVA[i] = (int*)malloc(Arraysize);
+                for (int x = 0; x < sizeof(Arraysize); x++) {
+                    Temp_UVA[i][x] = &UserVariableArray[i][x];
+                }
+                free(UserVariableArray[i]);
+            }
+            free(UserVariableArray);
+            //Create New User Variable Array with the added column. copyes the Values back from the Temp_UVA array.
+            int** UserVariableArray[UVA_Size];
+            if (Temp_UVA == NULL) {
+                printf("\033[1;31m LewDosKernel %s: UVA Memory Allocation Fault!\033[0m\n", LDVersion);
+                return;
+            }
+            for (int i = 0; i < UVA_Size; i++) {
+                Temp_UVA[i] = (int*)malloc(Arraysize + 1);
+                for (int x = 0; x < Arraysize; x++) {
+                    UserVariableArray[i][x] = Temp_UVA[i][x];
+                }
+                free(Temp_UVA[i]);
+            }
+            free(Temp_UVA);
+        }
+
+        UserVariableArray[0][UserIndexPointer] = UserID;
+        UserVariableArray[1][UserIndexPointer] = Permission_Level;
+        UserVariableArray[2][UserIndexPointer] = 0;
+        UserVariableArray[3][UserIndexPointer] = 0;
+        UserVariableArray[4][UserIndexPointer] = 0;
+        
+
+    return;
+}
+
+int UserAuth(char* Username, char* Password, int* Permission_Level) {
+    FILE* UserDat = fopen("UserDat.ldf", "r");
+    char read_Buffer[40];
+    char* delimiter = ",";
+    char* token;
+    while (fgets(read_Buffer, sizeof(read_Buffer), UserDat) != NULL) {
+        token = strtok(read_Buffer, delimiter);
+        char* UserToken = NULL;
+        char* PasswordToken = NULL;
+        int IDToken = 0;
+        int Permission_Level_Token = 0;
+        while (token != NULL) {
+            if (strncmp(token, "un:", 3) == 0) {
+                // Found Username
+
+                UserToken = token + 3; // Skip "un:"
+            }
+            else if (strncmp(token, "pw:", 3) == 0) {
+                // Found Password
+                PasswordToken = token + 3; // Skip "pw:"
+            }
+            else if (strncmp(token, "ID:", 3) == 0) {
+                // Found UserID
+                IDToken = atoi(token + 3); // Convert the string to an integer
+            }
+            else if (strncmp(token, "pl:", 3) == 0) {
+                // Found Permission Level
+                Permission_Level_Token = atoi(token + 3); // Convert the string to an integer
+            }
+
+            token = strtok(NULL, delimiter);
+        }
+        if(UserToken == NULL){}
+        else {
+            if (strncmp(UserToken, Username, 16) == 0) {
+                if (strncmp(PasswordToken, Password, 20) == 0) {
+                    return IDToken;
+                }
+                else {
+                    printf("\033[1;31m LewDos %s: Wrong Password \033[0m\n", LDVersion);
+                    return 0;
+                }
+            }
+        }
+
+    }
+    printf("\033[1;31m LewDos %s: Username Does not Exist \033[0m\n", LDVersion);
+    return 0;
+}
+
+char* Login() {
+    printf("\033[1;30m LewDos %s: Please Log in \033[0m\n", LDVersion);
+    printf("\033[1;30m Username: \033[0m\n");
+    char* Username;
+    scanf("%s", Username);
+    printf("\033[1;30m Password: \033[0m\n");
+    char Password[20];
+    scanf("%s", Password);
+    int Permission_Level = 0;
+    int UserID = 0;
+    UserID = UserAuth(Username, Password, &Permission_Level);
+    if (UserID == 0) {
+        Login(Username);
+    }
+    Memory_Initialization(false, Heap_Chunksize, UserID, Username, Permission_Level);
+    return Username;
+}
+
+void Smash(char* Username) {
+    strcpy(Smash_Commands[0], "Shutdown");
+    strcpy(Smash_Commands[1], "Logout");
+    strcpy(Smash_Commands[2], "UserChange");
+    strcpy(Smash_Commands[3], "UwUnator"); //Text editor
+    strcpy(Smash_Commands[4], "Nerdulator"); //Hex/ram editor
+    printf("\033[1;32m %s>>>\033[0m\n", Username);
+    char* command;
+    scanf("%s", command);
+    int operation = 10;
+    for (int i = 0; i < sizeof(Smash_Commands); i++) {
+        if (strncmp(command, Smash_Commands[i], 40) == 0) {
+            operation = i;
+            break;
+        }
+    }
+    switch (operation) {
+    case 0:
+        printf("\033[1;32m LewDos %s: Shutting Down...\033[0m\n", LDVersion);
+        return;
+    case 1:
+        printf("\033[1;31m LewDos %s: oww noww, logout is nowt suppowted yet, just westawt the cumpotah UwU \033[0m\n", LDVersion);
+        break;
+    case 2:
+        Login();
+        break;
+    case 3:
+        printf("\033[1;31m LewDos %s: i knoww you Love to UwU Evewywhewe but pwease be patient, i am wowking wevy heavwly on it //w// \033[0m\n", LDVersion);
+        break;
+    case 4:
+        printf("\033[1;31m LewDos %s: ewdiwing youw WAM is wevy nice, bwut sawdly itws nowt pwossible yet. sowwyy, pwease dwont be too mad nyaah~ \033[0m\n", LDVersion);
+        break;
+    case 10:
+        printf("\033[1;31m LewDos %s: Ow No, you did a fwucky whucky, this Command is not found. \033[0m\n", LDVersion);
+        break;
+    }
+    Smash(Username);
+}
+
+void Start() {
+    printf("\033[1;30m LewDosKernel %s: Start LewDos Version %s \033[0m\n", LDVersion, LDVersion);
+    printf("\033[1;30m LewDosKernel %s: Loading operating system... \033[0m\n", LDVersion);
+    system("cls");
+    FILE* Logo = fopen("LewDosLogo.ldp", "r");
+    char read_Buffer[40];
+    while (fgets(read_Buffer, sizeof(read_Buffer), Logo) != NULL) {
+        printf("\033[1;32m %s", read_Buffer);
+    }
+    printf("\033[1;32m\033[0m\n");
+    char* Username = Login();
+    printf("\033[1;32m Welcome to LewDos Version %s!\033[0m\n", LDVersion);
+    Smash(Username);
+    return;
+
+}
+
 int main() {
-    printf("\033[1;33m LewDosKernel %s: Started\033[0m\n", LDVersion);
-    Assembler("LewdosOS.ass", 0);// load, compile and run OS File
+    Start();
+    //Assembler("LewdosOS.ass", 0);// load, compile and run OS File
 
     return 0;
 }

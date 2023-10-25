@@ -23,7 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Instruction_Set.ldf" />
+    <None Include="LewDosLogo.ldp" />
     <None Include="LewdosOS.ass" />
+    <None Include="UserDat.ldf" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LewDos WIndows Kernel v1.0.c" />
