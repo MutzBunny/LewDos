@@ -1,8 +1,0 @@
-#File Structure:
-#Username (un)
-#Password (pw)
-#User ID (ID)
-#Permission Level (pl)
-
-un:Mutzy,pw:admin,ID:1,pl:2
-un:Benny,pw:trees,ID:2,pl:0
