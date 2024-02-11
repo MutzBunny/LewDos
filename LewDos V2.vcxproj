@@ -22,10 +22,12 @@
     <ClCompile Include="IO_Driver_Win.c" />
     <ClCompile Include="LewDos_Kernel.c" />
     <ClCompile Include="Memes.c" />
+    <ClCompile Include="Module.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IO_Driver.h" />
     <ClInclude Include="Memes.h" />
+    <ClInclude Include="OS_Config.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LewDosLogo.ldp" />
@@ -104,6 +106,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

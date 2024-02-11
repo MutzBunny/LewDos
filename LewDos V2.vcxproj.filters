@@ -24,12 +24,18 @@
     <ClCompile Include="IO_Driver_Win.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Module.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="IO_Driver.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="OS_Config.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

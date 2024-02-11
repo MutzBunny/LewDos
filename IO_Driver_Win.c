@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Print command. Parameters are the message as a Char array (String) and the ANSI atributes. you can split the atributes by a ';' for example red, italic would be "3;31"
+
+//Print command. Parameters are the message as a Char array (String) and the ANSI atributes. you can split the atributes by a ';' for example red, italic would be "3;31" the "" are important
 /*
 ANSI Color list:
 Color:	Forground	Background
@@ -26,9 +27,11 @@ you can also jump to the beginning of line with 'E' and to the previous line wit
 */
 void Systemout_Print(char* Message, char* Color) {
 	printf("\033[%sm%s\033[0m\n", Color, Message);
+	return;
 }
 
 //Clears the Entire Terminal. for things like Teletypes that wont work. maybe insert two, three newlines in here if you plan on using a teletype
 void Systemout_Clear() {
 	system("cls");
+	return;
 }
