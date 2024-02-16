@@ -1,0 +1,11 @@
+	Todo:			Priority:			Dependencies:		Checkmark if done:
+0	File System		HIGH				-
+1	Module Support	HIGH				File System
+2	Module Init		MED					Module Support
+3	ASM translator	MED					FS,MS
+4	SMASH INIT		LOW					-
+5	SMASH Login		LOW					FS, Encryption
+6	MEMS			LOW					-
+7	Virtualisation	LOW					Login
+8	Encryption		LOW					Login
+9	SMASH U/I		LOW					-

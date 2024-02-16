@@ -25,6 +25,8 @@ Up	Down Left Right
 A	B	 D	  C
 you can also jump to the beginning of line with 'E' and to the previous line with 'F'
 */
+
+
 void Systemout_Print(char* Message, char* Color) {
 	printf("\033[%sm%s\033[0m\n", Color, Message);
 	return;
