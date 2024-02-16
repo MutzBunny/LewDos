@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#ifdef _WIN32 // If using windows, this will get compiled.
+#ifdef __linux__ // if using linux, this will get compiled.
 
 //Print command. Parameters are the message as a Char array (String) and the ANSI atributes. you can split the atributes by a ';' for example red, italic would be "3;31" the "" are important
 /*
@@ -36,7 +36,7 @@ void Systemout_Print(char* Message, char* Color) {
 
 //Clears the Entire Terminal. for things like Teletypes that wont work. maybe insert two, three newlines in here if you plan on using a teletype
 void Systemout_Clear() {
-	system("cls");
+	system("clear");
 	return;
 }
 
