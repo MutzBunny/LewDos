@@ -19,17 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fat12.c" />
+    <ClCompile Include="fat12_internal.c" />
     <ClCompile Include="IO_Driver_Win.c" />
     <ClCompile Include="LewDos_Kernel.c" />
-    <ClCompile Include="Memes.c" />
+    <ClCompile Include="Mems.c" />
     <ClCompile Include="Module.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fat12.h" />
+    <ClInclude Include="fat12_internal.h" />
     <ClInclude Include="IO_Driver.h" />
-    <ClInclude Include="Memes.h" />
+    <ClInclude Include="Mems.h" />
     <ClInclude Include="OS_Config.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DriveA.fdd" />
     <None Include="LewDosLogo.ldp" />
   </ItemGroup>
   <ItemGroup>

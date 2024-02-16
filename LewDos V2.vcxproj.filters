@@ -18,7 +18,7 @@
     <ClCompile Include="LewDos_Kernel.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Memes.c">
+    <ClCompile Include="Mems.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="IO_Driver_Win.c">
@@ -27,9 +27,15 @@
     <ClCompile Include="Module.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="fat12.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="fat12_internal.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Memes.h">
+    <ClInclude Include="Mems.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="IO_Driver.h">
@@ -38,10 +44,22 @@
     <ClInclude Include="OS_Config.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="fat12.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="fat12_internal.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="LewDosLogo.ldp">
       <Filter>Ressourcendateien</Filter>
     </None>
+    <None Include="DriveA.fdd">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
 </Project>
