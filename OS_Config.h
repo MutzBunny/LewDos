@@ -24,5 +24,9 @@ const Module_function_type Module_functions[] = {
 
 #endif
 
+//Advanced options
+//#define BYTESTREAM_HOLD_TYPE // Define if you want the bytestream's type to be stored or not.
+#define BYTESTREAM_AUTOFLUSH // Define if you want bytestreams to flush automatically.
+#define BYTESTREAM_BUF_SIZE_DEFAULT 16 // Default amount of bytes for buffered.
 
 #endif // !OS_CONFIG_H
