@@ -3,26 +3,26 @@
 #include <stdio.h>
 
 //Calculate the amount of memory blocks available
-#define Memory_Blocks (System_Memory / Memory_Block_Size) 
+#define LEWDOS_MEMORY_BLOCKS (LEWDOS_SYSTEM_MEMORY / LEWDOS_MEMORY_SIZE) 
 
 //Create a BitMap for the Memory Blocks (0xFF means unallocated.
 //Bitmasked are Bits 0-5 for UserID, 6 for Read onky (0=full access, 1= read only block)
 //Bit 7 is the free flag (1=free, 0=allocated) )
-unsigned char Memory_BitMap[Memory_Blocks];
+unsigned char Memory_BitMap[LEWDOS_MEMORY_BLOCKS];
 
 //Create a pointer to the start of the Memory Block
 //(used as a pointer to return teh memory access location, based on which block wants to be accessed)
-unsigned char* start_address = (unsigned char*)Memory_Start_Address;
+unsigned char* start_address = (unsigned char *) LEWDOS_MEMORY_START_ADDRESS;
 
 //Start routine to initialize The memory bitmap (set all blocks to free)
 void init_memory()
 {   //for loop to cycle through all the avaiable memory blocks
-    for (int i = 0; i < Memory_Blocks; i++)
+    for (int i = 0; i < LEWDOS_MEMORY_BLOCKS; i++)
     {
         Memory_BitMap[i] = 0xFF; //set them to 0xFF (free)
     }
     //for loop to check if all memory blocks are actually free
-    for (int i = 0; i < Memory_Blocks; i++)
+    for (int i = 0; i < LEWDOS_MEMORY_BLOCKS; i++)
     {
         if(Memory_BitMap[i] != 0xFF) //Check if the memory block is not free
         {
@@ -30,17 +30,17 @@ void init_memory()
             return;
         }
     }
-    printf("%dkB of Memory Initialized\n", Memory_Blocks * Memory_Block_Size / 1024);
+    printf("%dkB of Memory Initialized\n", LEWDOS_MEMORY_BLOCKS * LEWDOS_MEMORY_SIZE / 1024);
     return; 
 }
 
 //Memory Allocation Function, Sets Flags, and UserID appropriately
 void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
     //printf("test");
-    int blocks_needed = (size +  Memory_Block_Size -1) / Memory_Block_Size; //Calculate the amount of blocks needed
+    int blocks_needed = (size +  LEWDOS_MEMORY_SIZE -1) / LEWDOS_MEMORY_SIZE; //Calculate the amount of blocks needed
     
     //for loop to cycle through all the avaiable memory blocks
-    for(unsigned char i = 0; i < Memory_Blocks; i++)
+    for(unsigned char i = 0; i < LEWDOS_MEMORY_BLOCKS; i++)
     {
         
         if(Memory_BitMap[i] == 0xFF) //Check if the memory block is free (0xFF means free)
@@ -64,8 +64,8 @@ void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
                     //Set the flags, and UserID (Batmasked 0x40 for the rw flag and 0x3F for UserID (bits 0-5) 0x80 is bit 7 set)
                     Memory_BitMap[i+j] = (rw_flags & 0x40) | (UserID & 0x3F) | 0x80;
                 }
-                printf("found empty memory location: %hhn", start_address + i * Memory_Block_Size);
-                return start_address + i * Memory_Block_Size; //Return the memory access location
+                printf("found empty memory location: %hhn", start_address + i * LEWDOS_MEMORY_SIZE);
+                return start_address + i * LEWDOS_MEMORY_SIZE; //Return the memory access location
             }
         }
     }
@@ -76,9 +76,9 @@ void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
 void free_memory(void *ptr, unsigned char UserID)
 {
     //Calculate the block number based on the pointer
-    int block = ((unsigned char *)ptr - start_address) / Memory_Block_Size;
+    int block = ((unsigned char *)ptr - start_address) / LEWDOS_MEMORY_SIZE;
     //Check if the block is within the memory bounds
-    if(block < 0 || block >= Memory_Blocks)
+    if(block < 0 || block >= LEWDOS_MEMORY_BLOCKS)
     {
         //out of bounds error
         printf("Invalid Memory Block (address %p @ %d)\n", ptr, UserID);
@@ -88,7 +88,7 @@ void free_memory(void *ptr, unsigned char UserID)
     if((Memory_BitMap[block] & 0x3F) != UserID)
     {
         //Access violation error
-        printf("Access vioation; Invalid memory acess (address %p @ %d)\n", ptr, UserID);
+        printf("Access vioation; Invalid memory access (address %p @ %d)\n", ptr, UserID);
         return;
     }
     //Set the block to free
@@ -99,13 +99,14 @@ void free_memory(void *ptr, unsigned char UserID)
 //Function that checks if the user is allowed to access the memory at the location.
 char memory_access(void *ptr, unsigned char userID){
     //convert the pointer to a block index
-    int block_index = ((unsigned char*)ptr - start_address) / Memory_Block_Size;
+    int block_index = ((unsigned char*)ptr - start_address) / LEWDOS_MEMORY_SIZE;
     //Check if the block is within the memory bounds
-    if(block_index < 0 || block_index > Memory_Block_Size) return 0;
+    if(block_index < 0 || block_index > LEWDOS_MEMORY_SIZE) return 0;
 
     //Return 1 if the user is allowed to access the memory
     unsigned char flags = Memory_BitMap[block_index];
     if((flags & 0x3F) != userID) return 0;
     if((flags & 0x80) == 0) return 0;
-    return (*start_address + block_index * Memory_Block_Size);
+    return (*start_address + block_index * LEWDOS_MEMORY_SIZE);
 }
+
