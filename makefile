@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror -std=c11
+CFLAGS = -Wall -Wextra -Werror -std=c99
 
 # Source files
 SRCS = $(wildcard Kernel/*.c)
@@ -11,7 +11,7 @@ SRCS = $(wildcard Kernel/*.c)
 OBJS = $(SRCS:.c=.o)
 
 # Executable name
-EXEC = LewDos
+EXEC = lewdos.elf
 
 # Default target
 all: clean $(EXEC) run
