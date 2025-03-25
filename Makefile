@@ -1,11 +1,10 @@
 # Compiler
 CC = gcc
 
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror -std=c99
-
-# Source files
-SRCS = $(wildcard Kernel/*.c)
+CFLAGS = -Wall -Wextra -Werror -std=c99 -I Kernel/inc-c
+SRCS = $(call rwildcard,Kernel/src-c/,*.c)
 
 # Object files
 OBJS = $(SRCS:.c=.o)
@@ -33,3 +32,4 @@ run:
 	./$(EXEC)
 
 .PHONY: all clean run
+

@@ -1,6 +1,7 @@
+#include <main.h>
+
+#include <system-config.h>
 #include <stdio.h>
-#include "../Include/System_Config.h"
-#include "../Include/main.h"
 
 int main()
 {
