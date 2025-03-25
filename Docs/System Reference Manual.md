@@ -12,3 +12,5 @@ To give a couple of Examples:
 0xFF (b1111 1111) = Block is Free
 0x03 (b0000 0011) = Block is allocated to UserID 03 and Reading and wrting enabled
 0x20 (b0010 0000) = Block is reseverd for Kernel space, and set to Read only
+
+The system is designed so every 
