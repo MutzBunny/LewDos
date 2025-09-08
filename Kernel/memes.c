@@ -6,12 +6,12 @@
 #define Memory_Blocks (System_Memory / Memory_Block_Size) 
 
 //Create a BitMap for the Memory Blocks (0xFF means unallocated.
-//Bitmasked are Bits 0-5 for UserID, 6 for Read onky (0=full access, 1= read only block)
+//Bitmasked are Bits 0-5 for UserID, 6 for Read ony (0=full access, 1= read only block)
 //Bit 7 is the free flag (1=free, 0=allocated) )
 unsigned char Memory_BitMap[Memory_Blocks];
 
 //Create a pointer to the start of the Memory Block
-//(used as a pointer to return teh memory access location, based on which block wants to be accessed)
+//(used as a pointer to return the memory access location, based on which block wants to be accessed)
 unsigned char* start_address = (unsigned char*)Memory_Start_Address;
 
 //Start routine to initialize The memory bitmap (set all blocks to free)
