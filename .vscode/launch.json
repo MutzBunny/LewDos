@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "RISC-V Baremetal Debug",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "external",
+      "gdbPath": "/home/emily/riscv/bin/riscv32-unknown-elf-gdb",
+      "device": "generic",
+      "cwd": "${workspaceFolder}",
+      "executable": "Debug/program.elf",
+      "runToMain": false,
+      "gdbTarget": "localhost:1234"
+    }
+  ]
+}

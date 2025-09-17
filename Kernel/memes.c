@@ -26,21 +26,21 @@ void init_memory()
     {
         if(Memory_BitMap[i] != 0xFF) //Check if the memory block is not free
         {
-            printf("Memory Initialization Failed\n");
+            Serial_out("Memory Initialization Failed\n");
             return;
         }
     }
-    printf("%dkB of Memory Initialized\n", Memory_Blocks * Memory_Block_Size / 1024);
+    Serial_out("%dkB of Memory Initialized\n", Memory_Blocks * Memory_Block_Size / 1024);
     return; 
 }
 
 //Memory Allocation Function, Sets Flags, and UserID appropriately
-void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
-    //printf("test");
+int memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
+    //Serial_out("test");
     int blocks_needed = (size +  Memory_Block_Size -1) / Memory_Block_Size; //Calculate the amount of blocks needed
     
     //for loop to cycle through all the avaiable memory blocks
-    for(unsigned char i = 0; i < Memory_Blocks; i++)
+    for(int i = 0; i < Memory_Blocks; i++)
     {
         
         if(Memory_BitMap[i] == 0xFF) //Check if the memory block is free (0xFF means free)
@@ -49,7 +49,7 @@ void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
             int j = 0;
             for(j = 0; j < blocks_needed; j++)
             {
-                printf("test");
+                //Serial_out("test");
                 if(Memory_BitMap[i+j] != 0xFF) //Check if the memory block is not free
                 {
                     //if found a allocated block within the needed blocks, break the loop and try again
@@ -64,12 +64,12 @@ void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags){
                     //Set the flags, and UserID (Batmasked 0x40 for the rw flag and 0x3F for UserID (bits 0-5) 0x80 is bit 7 set)
                     Memory_BitMap[i+j] = (rw_flags & 0x40) | (UserID & 0x3F) | 0x80;
                 }
-                printf("found empty memory location: %hhn", start_address + i * Memory_Block_Size);
-                return start_address + i * Memory_Block_Size; //Return the memory access location
+                Serial_out("found empty memory block: %d \n", i);
+                return i; //Return the memory block location
             }
         }
     }
-    return NULL;
+    return 0;
 }
 
 //Memory Free Function, Sets the block pointed to, to free
@@ -81,14 +81,14 @@ void free_memory(void *ptr, unsigned char UserID)
     if(block < 0 || block >= Memory_Blocks)
     {
         //out of bounds error
-        printf("Invalid Memory Block (address %p @ %d)\n", ptr, UserID);
+        Serial_out("Invalid Memory Block (address %p @ %d)\n", ptr, UserID);
         return;
     }
     //Check if the UserID matches the block
     if((Memory_BitMap[block] & 0x3F) != UserID)
     {
         //Access violation error
-        printf("Access vioation; Invalid memory acess (address %p @ %d)\n", ptr, UserID);
+        Serial_out("Access vioation; Invalid memory acess (address %p @ %d)\n", ptr, UserID);
         return;
     }
     //Set the block to free
@@ -97,9 +97,7 @@ void free_memory(void *ptr, unsigned char UserID)
 }   
 
 //Function that checks if the user is allowed to access the memory at the location.
-char memory_access(void *ptr, unsigned char userID){
-    //convert the pointer to a block index
-    int block_index = ((unsigned char*)ptr - start_address) / Memory_Block_Size;
+void *memory_access(int block_index, unsigned char userID){
     //Check if the block is within the memory bounds
     if(block_index < 0 || block_index > Memory_Block_Size) return 0;
 
@@ -107,5 +105,5 @@ char memory_access(void *ptr, unsigned char userID){
     unsigned char flags = Memory_BitMap[block_index];
     if((flags & 0x3F) != userID) return 0;
     if((flags & 0x80) == 0) return 0;
-    return (*start_address + block_index * Memory_Block_Size);
+    return (start_address + block_index * Memory_Block_Size);
 }

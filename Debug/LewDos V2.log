@@ -1,7 +1,0 @@
-﻿  LewDos_Kernel.c
-  Module.c
-  Code wird generiert...
-LINK : warning LNK4075: /INCREMENTAL wird aufgrund der Angabe von /FORCE ignoriert.
-Module.obj : warning LNK4006: _Module_functions ist bereits in "LewDos_Kernel.obj" definiert; zweite Definition wird ignoriert.
-C:\Users\onecu\source\repos\LewDos V2\Debug\LewDos V2.exe : warning LNK4088: Image wird aufgrund der Option /FORCE generiert; Image kann möglicherweise nicht ausgeführt werden.
-  LewDos V2.vcxproj -> C:\Users\onecu\source\repos\LewDos V2\Debug\LewDos V2.exe

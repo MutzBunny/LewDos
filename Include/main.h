@@ -4,8 +4,9 @@
 #define Version "V0.1"
 
 void init_memory(void);
-void *memory_alloc(int size, unsigned char UserID, unsigned char rw_flags);
+int memory_alloc(int size, unsigned char UserID, unsigned char rw_flags);
 void free_memory(void *ptr, unsigned char UserID);
-char memory_access(void *ptr, unsigned char userID);
+void *memory_access(int block_index, unsigned char userID);
+void Serial_out(const char* fmt, ...);
 
 #endif
